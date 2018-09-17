@@ -30,7 +30,7 @@ namespace SocketClientStarter
 
                 client.Send(buffSend);
 
-                byte[] buffReceived = new byte[128];
+                byte[] buffReceived = new byte[1000000];
                 int numberOfReceivedBytes = client.Receive(buffReceived);
 
                 string receivedText = Encoding.ASCII.GetString(buffReceived, 0, numberOfReceivedBytes);
