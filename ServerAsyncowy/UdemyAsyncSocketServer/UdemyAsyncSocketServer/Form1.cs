@@ -20,10 +20,6 @@ namespace UdemyAsyncSocketServer
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void btnAcceptIncomingAsync_Click(object sender, EventArgs e)
-        {
             StartListeningForIncomingConnection();
         }
         public async void StartListeningForIncomingConnection(IPAddress ipaddr = null, int port = 16010)
