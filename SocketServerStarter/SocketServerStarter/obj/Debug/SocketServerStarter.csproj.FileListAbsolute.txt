@@ -1,0 +1,7 @@
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\bin\Debug\SocketServerStarter.exe.config
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\bin\Debug\SocketServerStarter.exe
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\bin\Debug\SocketServerStarter.pdb
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\obj\Debug\SocketServerStarter.csprojAssemblyReference.cache
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\obj\Debug\SocketServerStarter.csproj.CoreCompileInputs.cache
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\obj\Debug\SocketServerStarter.exe
+C:\Users\Kuba\Desktop\UDEMY TCP IP\SocketServerStarter\SocketServerStarter\obj\Debug\SocketServerStarter.pdb
