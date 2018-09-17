@@ -19,7 +19,7 @@ namespace SocketServerStarter
             listenerSocket.Bind(ipep);
             listenerSocket.Listen(5);
             int numberOfReceivedBytes = 0;
-            byte[] buff = new byte[786432];
+            byte[] buffIn = new byte[786432];
 
             Console.WriteLine("About to accept incoming connection");
             Socket client = listenerSocket.Accept();
@@ -27,15 +27,17 @@ namespace SocketServerStarter
 
                 while (true)
                 {
-                    numberOfReceivedBytes = client.Receive(buff); // tutaj czekaj na dane od klienta, ten element blokuje kod
+                    numberOfReceivedBytes = client.Receive(buffIn); // tutaj czekaj na dane od klienta, ten element blokuje kod
 
-                    string receivedText = Encoding.ASCII.GetString(buff, 0, numberOfReceivedBytes); // zamien odebrane dane na string
+                    string receivedText = Encoding.ASCII.GetString(buffIn, 0, numberOfReceivedBytes); // zamien odebrane dane na string
 
                     Console.WriteLine("Data sent by client: " + receivedText);
 
-                    client.Send(buff); //odeślij do klienta spowrotem
+                    byte[] buffOut = Encoding.ASCII.GetBytes("serwer wysyla");
 
-                    Array.Clear(buff, 0, buff.Length);  // wyczyść buff i przygotuj na nowe dane
+                    client.Send(buffOut); //wyslij dane do klienta
+
+                    Array.Clear(buffIn, 0, buffIn.Length);  // wyczyść buff i przygotuj na nowe dane
                     numberOfReceivedBytes = 0;          //wyzeruj licznik odebranych bajtów
 
                 }

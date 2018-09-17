@@ -25,6 +25,8 @@ namespace SocketClientStarter
             {
                 inputString = Console.ReadLine();
 
+                inputString = inputString.Trim();
+
                 byte[] buffSend = Encoding.ASCII.GetBytes(inputString);
 
                 client.Send(buffSend);
@@ -35,6 +37,9 @@ namespace SocketClientStarter
                 string receivedText = Encoding.ASCII.GetString(buffReceived, 0, numberOfReceivedBytes);
 
                 Console.WriteLine(receivedText);
+
+                numberOfReceivedBytes = 0;
+                Array.Clear(buffReceived, 0, buffReceived.Length);
             }
 
             if(client !=null)
