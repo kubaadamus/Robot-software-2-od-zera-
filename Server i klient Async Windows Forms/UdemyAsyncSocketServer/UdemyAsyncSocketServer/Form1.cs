@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LahoreSocketAsync;
 using System.IO;
+using System.Diagnostics;
 
 namespace UdemyAsyncSocketServer
 {
@@ -33,6 +34,7 @@ namespace UdemyAsyncSocketServer
         private void btnSendAll_Click(object sender, EventArgs e)
         {
             mServer.SendToAll(txtMessage.Text.Trim());
+            
         }
 
         private void btnStopServer_Click(object sender, EventArgs e)
@@ -74,6 +76,17 @@ namespace UdemyAsyncSocketServer
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            txtConsole.AppendText(DateTime.Now.ToString() + "\n");
+            mServer.SendToAll(DateTime.Now.ToString());
+        }
+
+        private void startTimerButton_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
         }
     }
 }

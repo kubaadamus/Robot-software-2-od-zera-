@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnAcceptIncomingAsync = new System.Windows.Forms.Button();
             this.btnSendAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnStopServer = new System.Windows.Forms.Button();
             this.txtConsole = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.startTimerButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAcceptIncomingAsync
@@ -91,11 +94,27 @@
             this.txtConsole.Size = new System.Drawing.Size(779, 291);
             this.txtConsole.TabIndex = 5;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 30;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // startTimerButton
+            // 
+            this.startTimerButton.Location = new System.Drawing.Point(197, 368);
+            this.startTimerButton.Name = "startTimerButton";
+            this.startTimerButton.Size = new System.Drawing.Size(75, 33);
+            this.startTimerButton.TabIndex = 6;
+            this.startTimerButton.Text = "StartTimer";
+            this.startTimerButton.UseVisualStyleBackColor = true;
+            this.startTimerButton.Click += new System.EventHandler(this.startTimerButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 431);
+            this.Controls.Add(this.startTimerButton);
             this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.btnStopServer);
             this.Controls.Add(this.txtMessage);
@@ -119,6 +138,8 @@
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnStopServer;
         private System.Windows.Forms.TextBox txtConsole;
+        private System.Windows.Forms.Button startTimerButton;
+        public System.Windows.Forms.Timer timer1;
     }
 }
 
