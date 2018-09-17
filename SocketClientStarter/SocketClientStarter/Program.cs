@@ -18,7 +18,6 @@ namespace SocketClientStarter
             IPAddress.TryParse("89.229.95.152", out ipaddr);
             int intPort = 16010;
             string inputString;
-
             client.Connect(ipaddr, intPort);
 
             while (true)

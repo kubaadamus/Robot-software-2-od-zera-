@@ -20,7 +20,6 @@ namespace SocketServerStarter
             listenerSocket.Listen(5);
             int numberOfReceivedBytes = 0;
             byte[] buffIn = new byte[786432];
-
             Console.WriteLine("About to accept incoming connection");
             Socket client = listenerSocket.Accept();
             Console.WriteLine("Client connected. " + client.ToString() + " IP EndPoint: " + client.RemoteEndPoint.ToString());
@@ -33,7 +32,7 @@ namespace SocketServerStarter
 
                     Console.WriteLine("Data sent by client: " + receivedText);
 
-                    byte[] buffOut = Encoding.ASCII.GetBytes("serwer wysyla");
+                byte[] buffOut = ObslugaRequestow(receivedText);
 
                     client.Send(buffOut); //wyslij dane do klienta
 
@@ -43,6 +42,15 @@ namespace SocketServerStarter
                 }
            
             Console.ReadKey();
+        }
+        public static byte[] ObslugaRequestow(string receivedText) // tutaj ustala się reakcję serwera na zapytania clienta
+        {
+            if(receivedText == "test")
+            {
+                return Encoding.ASCII.GetBytes("Serwer odpowiada na test");
+            }
+
+            return Encoding.ASCII.GetBytes(".");
         }
     }
 }
