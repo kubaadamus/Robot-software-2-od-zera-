@@ -17,7 +17,7 @@ namespace SocketServerStarter
 
             IPAddress ipaddr = IPAddress.Any;
 
-            IPEndPoint ipep = new IPEndPoint(ipaddr, 23000);
+            IPEndPoint ipep = new IPEndPoint(ipaddr, 16010);
 
             listenerSocket.Bind(ipep);
 
@@ -29,18 +29,36 @@ namespace SocketServerStarter
 
             Console.WriteLine("Client connected. " + client.ToString() + " IP EndPoint: " + client.RemoteEndPoint.ToString());
 
-            byte[] buff = new byte[128];
+            byte[] buff = new byte[786432];
 
             int numberOfReceivedBytes = 0;
 
-            numberOfReceivedBytes = client.Receive(buff);
 
-            Console.WriteLine("number of received bytes" + numberOfReceivedBytes);
+            while(true)
+            {
+                numberOfReceivedBytes = client.Receive(buff);
 
-            Console.WriteLine("Data sent by client is: " + buff);
+                Console.WriteLine("number of received bytes" + numberOfReceivedBytes);
+
+                Console.WriteLine("Data sent by client is: " + buff);
+
+                string receivedText = Encoding.ASCII.GetString(buff, 0, numberOfReceivedBytes);
+
+                Console.WriteLine("Data sent by client: " + receivedText);
+
+                client.Send(buff);
+
+                if (receivedText == "quit")
+                {
+                    break;
+                }
+
+                Array.Clear(buff, 0, buff.Length);
+                numberOfReceivedBytes = 0;
 
 
-
+            }
+            Console.ReadKey();
         }
     }
 }

@@ -1,0 +1,3 @@
+Jeœli Twój program nie chce ³¹czyæ siê z publicznym ipv4 to
+1- WejdŸ w zaporê i zaawansowane ustawienia zapory, dodaj Tcp i Udp na port który chcesz uzywac
+2- wejdz do routera 192.168.0.1 admin/admin i tam w forwardingu otwórz port np 16010 ale zwróæ uwagê dla którego ip go otwierasz. ma byæ otwarty dla ip tej maszyny na której chcesz uzywaæ programu (ip wezmiesz z ipconfig, np 192.168.0.102). 
