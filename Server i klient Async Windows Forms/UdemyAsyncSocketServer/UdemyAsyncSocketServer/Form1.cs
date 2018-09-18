@@ -112,9 +112,10 @@ namespace UdemyAsyncSocketServer
             //mServer.SendToAll(DateTime.Now.ToString());
 
             //WYSYŁANIE KLATKI DO KLIENTA
-            mServer.SendToAll(ImageToByte(bitmap));
-            //byte[] imgToSend = ImageToByte(bitmap);
-            //txtConsole.AppendText(DateTime.Now.ToString() + " " + imgToSend.Length + "\n");
+            byte[] imgToSend = ImageToByte(bitmap);
+            mServer.SendToAll(imgToSend);
+            
+            txtConsole.AppendText(DateTime.Now.ToString() + " " + imgToSend.Length + "\n");
             pictureBox2.Image = CopyDataToBitmap(ImageToByte(bitmap));
         }
 
