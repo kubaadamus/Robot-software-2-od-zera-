@@ -43,6 +43,8 @@
             this.cmbVideoSource = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.clientsAmount = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(335, 452);
+            this.label1.Location = new System.Drawing.Point(336, 476);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 2;
@@ -78,7 +80,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(280, 481);
+            this.txtMessage.Location = new System.Drawing.Point(278, 495);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(183, 20);
             this.txtMessage.TabIndex = 3;
@@ -104,7 +106,6 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 25;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // startTimerButton
@@ -160,27 +161,45 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(429, 30);
+            this.pictureBox1.Location = new System.Drawing.Point(426, 30);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(814, 392);
+            this.pictureBox1.Size = new System.Drawing.Size(252, 202);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(1276, 78);
+            this.pictureBox2.Location = new System.Drawing.Point(426, 241);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(282, 221);
+            this.pictureBox2.Size = new System.Drawing.Size(252, 181);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 12;
             this.pictureBox2.TabStop = false;
+            // 
+            // clientsAmount
+            // 
+            this.clientsAmount.Location = new System.Drawing.Point(332, 446);
+            this.clientsAmount.Name = "clientsAmount";
+            this.clientsAmount.Size = new System.Drawing.Size(100, 20);
+            this.clientsAmount.TabIndex = 13;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(288, 449);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Clients";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1570, 527);
+            this.ClientSize = new System.Drawing.Size(741, 527);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.clientsAmount);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -221,6 +240,8 @@
         private System.Windows.Forms.ComboBox cmbVideoSource;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.TextBox clientsAmount;
+        private System.Windows.Forms.Label label3;
     }
 }
 

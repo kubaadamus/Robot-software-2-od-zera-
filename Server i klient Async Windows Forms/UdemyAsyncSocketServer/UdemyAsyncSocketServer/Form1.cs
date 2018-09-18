@@ -26,6 +26,7 @@ namespace UdemyAsyncSocketServer
         private IVideoSource videoSource;
         Bitmap bitmap;
         VideoCaptureDevice vidcapdev = new VideoCaptureDevice();
+        int ClientsAmount = 0;
 
         public Form1()
         {
@@ -79,6 +80,8 @@ namespace UdemyAsyncSocketServer
         {
             txtConsole.AppendText(string.Format("{0} - New client connected: {1}{2}", 
                 DateTime.Now, ccea.NewClient, Environment.NewLine));
+            ClientsAmount += 1;
+            clientsAmount.Text = ClientsAmount.ToString();
         }
 
         void HandleTextReceived(object sender, TextReceivedEventArgs trea)
@@ -99,6 +102,8 @@ namespace UdemyAsyncSocketServer
                 txtConsole.AppendText(string.Format("{0} - Client Disconnected: {1}\r\n",
                     DateTime.Now, cdea.DisconnectedPeer));
             }
+            ClientsAmount -= 1;
+            clientsAmount.Text = ClientsAmount.ToString();
         }
 
         private void Form1_Load(object sender, EventArgs e)
