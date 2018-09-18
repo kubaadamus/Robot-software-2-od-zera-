@@ -10,12 +10,22 @@ using System.Windows.Forms;
 using LahoreSocketAsync;
 using System.IO;
 using System.Diagnostics;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using AForge.Imaging.Filters;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace UdemyAsyncSocketServer
 {
     public partial class Form1 : Form
     {
         LahoreSocketServer mServer;
+        //zmienne kamery
+        private FilterInfoCollection videoDevicesList;
+        private IVideoSource videoSource;
+        Bitmap bitmap;
+        VideoCaptureDevice vidcapdev = new VideoCaptureDevice();
 
         public Form1()
         {
@@ -24,6 +34,24 @@ namespace UdemyAsyncSocketServer
             mServer.RaiseClientConnectedEvent += HandleClientConnected;
             mServer.RaiseTextReceivedEvent += HandleTextReceived;
             mServer.RaiseClientDisconnectedEvent += HandleClientDisconnected;
+
+            //INICJALIZACJA KAMERY
+            // get list of video devices
+            videoDevicesList = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo videoDevice in videoDevicesList)
+            {
+                cmbVideoSource.Items.Add(videoDevice.Name);
+            }
+            if (cmbVideoSource.Items.Count > 0)
+            {
+                cmbVideoSource.SelectedIndex = 0;
+            }
+            else
+            {
+                MessageBox.Show("No video sources found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            // stop the camera on window close
+            this.Closing += Form1_Closing;
         }
 
         private void btnAcceptIncomingAsync_Click(object sender, EventArgs e)
@@ -80,13 +108,81 @@ namespace UdemyAsyncSocketServer
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            txtConsole.AppendText(DateTime.Now.ToString() + "\n");
-            mServer.SendToAll(DateTime.Now.ToString());
+            //txtConsole.AppendText(DateTime.Now.ToString() + "wyslano klatke" +"\n");
+            //mServer.SendToAll(DateTime.Now.ToString());
+
+            //WYSYŁANIE KLATKI DO KLIENTA
+            mServer.SendToAll(ImageToByte(bitmap));
+            //byte[] imgToSend = ImageToByte(bitmap);
+            //txtConsole.AppendText(DateTime.Now.ToString() + " " + imgToSend.Length + "\n");
+            pictureBox2.Image = CopyDataToBitmap(ImageToByte(bitmap));
         }
 
         private void startTimerButton_Click(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
+
+
+            if(!timer1.Enabled)
+            {
+                timer1.Enabled = true;
+            }
+            else
+            {
+                timer1.Enabled = false;
+            }
+        }
+
+
+        //FUNKCJE KAMERY
+        private void Form1_Closing(object sender, CancelEventArgs e)
+        {
+            // signal to stop
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                videoSource.SignalToStop();
+            }
+        }
+
+        public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            bitmap = (Bitmap)eventArgs.Frame.Clone();
+
+            pictureBox1.Image = bitmap;
+
+        }
+
+
+
+
+        private void btnStart_Click_1(object sender, EventArgs e)
+        {
+            videoSource = new VideoCaptureDevice(videoDevicesList[cmbVideoSource.SelectedIndex].MonikerString);
+            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            videoSource.Start();
+
+
+        }
+
+        private void btnStop_Click_1(object sender, EventArgs e)
+        {
+            videoSource.SignalToStop();
+            if (videoSource != null && videoSource.IsRunning && pictureBox1.Image != null)
+            {
+                pictureBox1.Image.Dispose();
+            }
+        }
+
+        public static byte[] ImageToByte(Bitmap img)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+        }
+
+        public Bitmap CopyDataToBitmap(byte[] data)
+        {
+            TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
+
+            return (Bitmap)tc.ConvertFrom(data);
         }
     }
 }

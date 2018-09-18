@@ -224,5 +224,21 @@ namespace LahoreSocketAsync
             }
 
         }
+
+        //Przeladowanie SendAll dla wysyłania byte arrayow
+        public async void SendToAll(byte[] leMessage)
+        {
+            try
+            {
+                foreach (TcpClient c in mClients)
+                {
+                    c.GetStream().WriteAsync(leMessage, 0, leMessage.Length);
+                }
+            }
+            catch (Exception excp)
+            {
+                Debug.WriteLine(excp.ToString());
+            }
+        }
     }
 }
