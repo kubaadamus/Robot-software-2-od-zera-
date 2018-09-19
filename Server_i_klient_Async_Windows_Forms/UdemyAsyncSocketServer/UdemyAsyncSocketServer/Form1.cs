@@ -16,6 +16,7 @@ using AForge.Imaging.Filters;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.IO.Ports;
 
 namespace UdemyAsyncSocketServer
 {
@@ -28,6 +29,8 @@ namespace UdemyAsyncSocketServer
         Bitmap bitmap;
         VideoCaptureDevice vidcapdev = new VideoCaptureDevice();
         int ClientsAmount = 0;
+        SerialPort serial1;
+        string inString = "";
 
         public Form1()
         {
@@ -52,12 +55,16 @@ namespace UdemyAsyncSocketServer
                 MessageBox.Show("No video sources found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             this.Closing += Form1_Closing;
+
+            InicjalizujSerial();
+            serial1.DataReceived += new SerialDataReceivedEventHandler(port_OnReceiveDatazz);
         }
-        
         private void timer1_Tick(object sender, EventArgs e)
         {
             byte[] imgToSend = ImageToByte(bitmap);
             mServer.SendToAll(imgToSend);
+            txtConsole.AppendText(inString);
+
         }
         //======================================================================================== F U N K C J E  K A M E R Y ===================================================================
         public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -109,7 +116,6 @@ namespace UdemyAsyncSocketServer
                 return Image.FromStream(mss);
             }
         }
-
         //======================================================================================= R E S Z T A   R Z E C Z Y =====================================================================
         private void btnAcceptIncomingAsync_Click(object sender, EventArgs e)
         {
@@ -118,6 +124,7 @@ namespace UdemyAsyncSocketServer
         private void btnSendAll_Click(object sender, EventArgs e)
         {
             mServer.SendToAll(txtMessage.Text.Trim());
+            WyslijDoArduino(txtMessage.Text.Trim());
 
         }
         private void btnStopServer_Click(object sender, EventArgs e)
@@ -137,13 +144,9 @@ namespace UdemyAsyncSocketServer
         }
         void HandleTextReceived(object sender, TextReceivedEventArgs trea)
         {
-            txtConsole.AppendText(
-                string.Format(
-                    "{0} - Received from {2}: {1}{3}",
-                    DateTime.Now,
-                    trea.TextReceived,
-                    trea.ClientWhoSentText,
-                    Environment.NewLine));
+            txtConsole.AppendText(trea.TextReceived + Environment.NewLine);
+            txtConsole.AppendText(System.Environment.NewLine);
+            WyslijDoArduino(trea.TextReceived);
         }
         void HandleClientDisconnected(object sender, ConnectionDisconnectedEventArgs cdea)
         {
@@ -192,5 +195,45 @@ namespace UdemyAsyncSocketServer
                 pictureBox1.Image.Dispose();
             }
         }
+
+        void InicjalizujSerial()
+        {
+
+            serial1 = new SerialPort();
+            serial1.PortName = "COM4";
+            serial1.Parity = Parity.None;
+            serial1.BaudRate = 115200;
+            serial1.DataBits = 8;
+            serial1.StopBits = StopBits.One;
+            if (!serial1.IsOpen && serial1 != null)
+            {
+                serial1.Open();
+                serial1.ReadTimeout = 2000;
+                serial1.WriteTimeout = 1000;
+            }
+            serial1.BaseStream.Flush();
+            serial1.DiscardInBuffer();
+            serial1.DiscardOutBuffer();
+        }
+
+        void WyslijDoArduino(string inputString)
+        {
+            serial1.Write(inputString);
+            string dane;
+            
+        }
+
+        private static void port_OnReceiveDatazz(object sender,
+                                          SerialDataReceivedEventArgs e)
+        {
+            SerialPort spL = (SerialPort)sender;
+            byte[] buf = new byte[spL.BytesToRead];
+            Console.WriteLine("DATA RECEIVED!");
+            spL.Read(buf, 0, buf.Length);
+            string myString = System.Text.Encoding.ASCII.GetString(buf).Trim();
+            Console.Write(myString);
+            Console.WriteLine();
+        }
     }
 }
+
