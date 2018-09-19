@@ -31,6 +31,7 @@ namespace UdemyAsyncSocketServer
         int ClientsAmount = 0;
         SerialPort serial1;
         string inString = "";
+        string myString = "";
 
         public Form1()
         {
@@ -123,7 +124,7 @@ namespace UdemyAsyncSocketServer
         }
         private void btnSendAll_Click(object sender, EventArgs e)
         {
-            mServer.SendToAll(txtMessage.Text.Trim());
+            
             WyslijDoArduino(txtMessage.Text.Trim());
 
         }
@@ -200,7 +201,7 @@ namespace UdemyAsyncSocketServer
         {
 
             serial1 = new SerialPort();
-            serial1.PortName = "COM4";
+            serial1.PortName = "COM3";
             serial1.Parity = Parity.None;
             serial1.BaudRate = 115200;
             serial1.DataBits = 8;
@@ -219,20 +220,19 @@ namespace UdemyAsyncSocketServer
         void WyslijDoArduino(string inputString)
         {
             serial1.Write(inputString);
-            string dane;
             
         }
 
-        private static void port_OnReceiveDatazz(object sender,
+        void port_OnReceiveDatazz(object sender,
                                           SerialDataReceivedEventArgs e)
         {
-            SerialPort spL = (SerialPort)sender;
-            byte[] buf = new byte[spL.BytesToRead];
-            Console.WriteLine("DATA RECEIVED!");
-            spL.Read(buf, 0, buf.Length);
-            string myString = System.Text.Encoding.ASCII.GetString(buf).Trim();
-            Console.Write(myString);
-            Console.WriteLine();
+            
+            byte[] buf = new byte[serial1.BytesToRead];
+            serial1.Read(buf, 0, buf.Length);
+            myString = System.Text.Encoding.ASCII.GetString(buf).Trim();
+            Console.WriteLine(myString);
+            mServer.SendToAll(myString);
+
         }
     }
 }

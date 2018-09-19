@@ -11,8 +11,17 @@ void loop()
 instring = Serial.readString();
 if(instring=="a")
 {
-wyslij(String(instring.length()));
+digitalWrite(13,HIGH);
 }
+if(instring=="b"){
+digitalWrite(13,LOW);
+}
+if(instring.length()>0)
+{
+  wyslij(instring.substring(0, instring.length()-2));
+  instring="";
+}
+
 
 }
 void wyslij(String co) 
