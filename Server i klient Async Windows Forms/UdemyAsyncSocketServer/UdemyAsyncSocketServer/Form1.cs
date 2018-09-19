@@ -63,7 +63,7 @@ namespace UdemyAsyncSocketServer
         private void btnSendAll_Click(object sender, EventArgs e)
         {
             mServer.SendToAll(txtMessage.Text.Trim());
-            
+
         }
 
         private void btnStopServer_Click(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace UdemyAsyncSocketServer
 
         void HandleClientConnected(object sender, ClientConnectedEventArgs ccea)
         {
-            txtConsole.AppendText(string.Format("{0} - New client connected: {1}{2}", 
+            txtConsole.AppendText(string.Format("{0} - New client connected: {1}{2}",
                 DateTime.Now, ccea.NewClient, Environment.NewLine));
             ClientsAmount += 1;
             clientsAmount.Text = ClientsAmount.ToString();
@@ -90,7 +90,7 @@ namespace UdemyAsyncSocketServer
                 string.Format(
                     "{0} - Received from {2}: {1}{3}",
                     DateTime.Now,
-                    trea.TextReceived, 
+                    trea.TextReceived,
                     trea.ClientWhoSentText,
                     Environment.NewLine));
         }
@@ -119,16 +119,16 @@ namespace UdemyAsyncSocketServer
             //WYSYŁANIE KLATKI DO KLIENTA
             byte[] imgToSend = ImageToByte(bitmap);
             mServer.SendToAll(imgToSend);
-            
-            txtConsole.AppendText(DateTime.Now.ToString() + " " + imgToSend.Length + "\n");
-            pictureBox2.Image = CopyDataToBitmap(ImageToByte(bitmap));
+
+            //txtConsole.AppendText(DateTime.Now.ToString() + " " + imgToSend.Length + "\n");
+            //pictureBox2.Image = CopyDataToBitmap(ImageToByte(bitmap));
         }
 
         private void startTimerButton_Click(object sender, EventArgs e)
         {
 
 
-            if(!timer1.Enabled)
+            if (!timer1.Enabled)
             {
                 timer1.Enabled = true;
             }
@@ -152,8 +152,8 @@ namespace UdemyAsyncSocketServer
         public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             bitmap = (Bitmap)eventArgs.Frame.Clone();
-
-            pictureBox1.Image = bitmap;
+            
+            pictureBox1.Image = GetCompressedBitmap(bitmap, 1L);
 
         }
 
@@ -189,6 +189,22 @@ namespace UdemyAsyncSocketServer
             TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
 
             return (Bitmap)tc.ConvertFrom(data);
+        }
+
+
+        //KOMPRESOWANIE
+
+        private Image GetCompressedBitmap(Bitmap bmp, long quality)
+        {
+            using (var mss = new MemoryStream())
+            {
+                EncoderParameter qualityParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+                ImageCodecInfo imageCodec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(o => o.FormatID == ImageFormat.Jpeg.Guid);
+                EncoderParameters parameters = new EncoderParameters(1);
+                parameters.Param[0] = qualityParam;
+                bmp.Save(mss, imageCodec, parameters);
+                return Image.FromStream(mss);
+            }
         }
     }
 }
